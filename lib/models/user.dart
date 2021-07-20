@@ -1,0 +1,41 @@
+import 'package:engsinapp_flutter/models/bank.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+part 'user.g.dart';
+
+@JsonSerializable()
+class UserModel {
+  UserModel(
+      {this.createdAt,
+      this.email,
+      this.id,
+      this.isActive = false,
+      this.isDeleted = false,
+      this.isDetailsAdded = false,
+      this.updatedAt,
+      this.promoCode,
+      this.address,
+      this.username,
+      this.bankModel,
+      this.mobileNumber,
+      this.name,
+      this.nic});
+  int? id;
+  String? email;
+  String? name;
+  String? username;
+  String? nic;
+  String? mobileNumber;
+  String? address;
+  String? promoCode;
+  BankModel? bankModel;
+  bool isActive;
+  bool isDeleted;
+  bool isDetailsAdded;
+  String? createdAt;
+  String? updatedAt;
+
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
+}
