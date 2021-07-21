@@ -24,22 +24,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<UserModel> getUser() async {
-    UserModel _user = UserModel(
-        createdAt: "1212",
-        email: "email",
-        name: "firstName",
-        id: 1,
-        isActive: true,
-        isDeleted: false,
-        updatedAt: "123123",
-        username: "username",
-        bankModel: BankModel(
-            accountNumber: "123123213",
-            bank: "BOC",
-            branch: "Galle City",
-            cardHolderName: "Kasun Nirmala",
-            id: "123123123"));
-    return _user;
+    if (Resources.userModel != null) {
+      return Resources.userModel;
+    } else {
+      return UserModel();
+    }
   }
 
   @override

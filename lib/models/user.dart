@@ -19,8 +19,10 @@ class UserModel {
       this.bankModel,
       this.mobileNumber,
       this.name,
-      this.nic});
-  int? id;
+      this.nic,
+      this.slipURL});
+  @JsonKey(name: '_id')
+  String? id;
   String? email;
   String? name;
   String? username;
@@ -34,6 +36,7 @@ class UserModel {
   bool isDetailsAdded;
   String? createdAt;
   String? updatedAt;
+  String? slipURL;
 
   factory UserModel.fromJson(Map<String, dynamic> json) =>
       _$UserModelFromJson(json);

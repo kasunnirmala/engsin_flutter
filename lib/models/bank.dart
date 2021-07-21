@@ -10,6 +10,7 @@ class BankModel {
       this.branch,
       this.cardHolderName,
       this.id});
+  @JsonKey(name: '_id')
   String? id;
   String? cardHolderName;
   String? accountNumber;

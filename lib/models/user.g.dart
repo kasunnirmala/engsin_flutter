@@ -10,7 +10,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
   return UserModel(
     createdAt: json['createdAt'] as String?,
     email: json['email'] as String?,
-    id: json['id'] as int?,
+    id: json['_id'] as String?,
     isActive: json['isActive'] as bool,
     isDeleted: json['isDeleted'] as bool,
     isDetailsAdded: json['isDetailsAdded'] as bool,
@@ -24,11 +24,12 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
     mobileNumber: json['mobileNumber'] as String?,
     name: json['name'] as String?,
     nic: json['nic'] as String?,
+    slipURL: json['slipURL'] as String?,
   );
 }
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'email': instance.email,
       'name': instance.name,
       'username': instance.username,
@@ -42,4 +43,5 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'isDetailsAdded': instance.isDetailsAdded,
       'createdAt': instance.createdAt,
       'updatedAt': instance.updatedAt,
+      'slipURL': instance.slipURL,
     };

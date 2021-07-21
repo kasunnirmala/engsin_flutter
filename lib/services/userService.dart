@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:engsinapp_flutter/models/user.dart';
@@ -7,6 +9,7 @@ import 'package:engsinapp_flutter/util/get_dio.dart';
 import 'package:engsinapp_flutter/util/oAuthSecureStorage.dart';
 import 'package:engsinapp_flutter/util/oauth2Helper.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'baseService.dart';
 
 class UserService extends BaseService {
@@ -38,19 +41,36 @@ class UserService extends BaseService {
   }
 
   Future<Map<String, dynamic>> register(
-    String email,
+    String username,
     String password,
   ) async {
     try {
       var data = {
-        "email": email,
+        "username": username,
         "password": password,
       };
-      var response = await _dio.post('/api/open/register', data: data);
+      var response = await _dio.post('/api/v1/open/register', data: data);
 
       return response.data;
     } catch (e) {
       print(e);
+      return await onDioError(e, context);
+    }
+  }
+
+  Future<Map<String, dynamic>> updateUser(UserModel userModel, XFile file,
+      Function(int, int) onSendProgress) async {
+    FormData formData = FormData.fromMap({
+      'slip': (await MultipartFile.fromFile(file.path)),
+      'user': jsonEncode(userModel.toJson())
+    });
+    try {
+      var response = await _dio.post('/api/v1/user/update',
+          data: formData,
+          options: Options(contentType: "multipart/form-data"),
+          onSendProgress: onSendProgress);
+      return response.data;
+    } catch (e) {
       return await onDioError(e, context);
     }
   }
@@ -74,37 +94,5 @@ class UserService extends BaseService {
     await logout();
     AutoRouter.of(context).root.replace(LoadingScreenRoute());
     return null;
-  }
-
-  Future changePassword(String currPass, String newPass) async {
-    try {
-      var data = {
-        "oldPassword": currPass,
-        "newPassword": {"first": newPass, "second": newPass}
-      };
-      var response = await _dio.post('/api/profile/reset_password', data: data);
-      return response.data;
-    } catch (e) {
-      print(e);
-      return await onDioError(e, context);
-    }
-  }
-
-  Future profileUpdate(String firstName, String lastName, String mobileNo,
-      String nicNo, String drivingLicenseNo) async {
-    try {
-      var data = {
-        "firstName": firstName,
-        "lastName": lastName,
-        "mobileNo": mobileNo,
-        "nicNo": nicNo,
-        "drivingLicenseNo": drivingLicenseNo
-      };
-      var response = await _dio.post('/api/profile', data: data);
-      return response.data;
-    } catch (e) {
-      print(e);
-      return await onDioError(e, context);
-    }
   }
 }

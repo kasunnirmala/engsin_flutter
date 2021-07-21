@@ -47,6 +47,7 @@ dependencies:
   connectivity: ^3.0.6
   flutter_svg: ^0.22.0
   just_audio: ^0.9.2
+  image_picker: ^0.8.2
 
 dev_dependencies:
   flutter_test:

@@ -12,12 +12,12 @@ BankModel _$BankModelFromJson(Map<String, dynamic> json) {
     bank: json['bank'] as String?,
     branch: json['branch'] as String?,
     cardHolderName: json['cardHolderName'] as String?,
-    id: json['id'] as String?,
+    id: json['_id'] as String?,
   );
 }
 
 Map<String, dynamic> _$BankModelToJson(BankModel instance) => <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'cardHolderName': instance.cardHolderName,
       'accountNumber': instance.accountNumber,
       'bank': instance.bank,

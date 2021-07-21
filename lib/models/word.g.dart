@@ -12,7 +12,7 @@ WordModel _$WordModelFromJson(Map<String, dynamic> json) {
     audio: json['audio'] as String?,
     day: json['day'] as String?,
     dayMeta: json['dayMeta'] as String?,
-    id: json['id'] as String?,
+    id: json['_id'] as String?,
     createdAt: json['createdAt'] as String?,
     isActive: json['isActive'] as bool?,
     isDeleted: json['isDeleted'] as bool?,
@@ -21,7 +21,7 @@ WordModel _$WordModelFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$WordModelToJson(WordModel instance) => <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'words': instance.words,
       'audio': instance.audio,
       'day': instance.day,

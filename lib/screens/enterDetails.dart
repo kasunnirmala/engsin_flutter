@@ -1,4 +1,6 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:engsinapp_flutter/models/bank.dart';
+import 'package:engsinapp_flutter/models/user.dart';
 import 'package:engsinapp_flutter/resources/constants.dart';
 import 'package:engsinapp_flutter/resources/resources.dart';
 import 'package:engsinapp_flutter/route/appRouter.gr.dart';
@@ -15,7 +17,7 @@ class EnterDetailsScreen extends StatefulWidget {
 
 class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
   final _formKey = GlobalKey<FormBuilderState>(debugLabel: "Details");
-
+  UserModel _userModel = Resources.userModel;
   @override
   void initState() {
     super.initState();
@@ -122,9 +124,31 @@ class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
                           RoundedButton(
                               text: "Next",
                               press: () {
-                                AutoRouter.of(context).push(
-                                    UploadSlipScreenRoute(
-                                        userModel: Resources.userModel));
+                                if (_formKey.currentState!.saveAndValidate()) {
+                                  _userModel.name =
+                                      _formKey.currentState?.value["name"];
+                                  _userModel.nic =
+                                      _formKey.currentState?.value["nic"];
+                                  _userModel.address =
+                                      _formKey.currentState?.value["address"];
+                                  _userModel.mobileNumber =
+                                      _formKey.currentState?.value["mobileNo"];
+                                  _userModel.promoCode =
+                                      _formKey.currentState?.value["promo"];
+                                  BankModel _bankModal = BankModel(
+                                      cardHolderName: _formKey
+                                          .currentState?.value["holderName"],
+                                      accountNumber: _formKey
+                                          .currentState?.value["accountNumber"],
+                                      bank:
+                                          _formKey.currentState?.value["bank"],
+                                      branch: _formKey
+                                          .currentState?.value["branch"]);
+                                  _userModel.bankModel = _bankModal;
+                                  AutoRouter.of(context).push(
+                                      UploadSlipScreenRoute(
+                                          userModel: _userModel));
+                                }
                               })
                         ])),
                   ),

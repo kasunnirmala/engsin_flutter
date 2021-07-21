@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-const String BASE_URL = "http://192.168.1.12:1234";
+const String BASE_URL = "http://94.130.114.234:1234";
+// const String BASE_URL = "http://192.168.8.100:1234";
 const String APPCAST_URL = BASE_URL + "/android.xml";
 
 const ACCESS_TOKEN_KEY = 'accessToken';

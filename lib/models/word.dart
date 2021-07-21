@@ -14,6 +14,7 @@ class WordModel {
       this.isActive,
       this.isDeleted,
       this.updatedAt});
+  @JsonKey(name: '_id')
   String? id;
   List? words;
   String? audio;

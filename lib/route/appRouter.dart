@@ -25,10 +25,12 @@ import 'package:engsinapp_flutter/screens/uploadSlip.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[
+    // AutoRoute(page: LoadingScreen, path: '/loading'),
     AutoRoute(page: LoadingScreen, initial: true),
     AutoRoute(page: LoginScreen, path: '/login'),
     AutoRoute(page: SignUpScreen, path: '/signup'),
     AutoRoute(page: WelcomeScreen, path: '/welcome'),
+    // AutoRoute(page: UploadSlipScreen, initial: true),
     AutoRoute(page: HomeBase, path: '/home_base', children: <AutoRoute>[
       AutoRoute(page: HomeScreen, initial: true),
       AutoRoute(page: ProfileScreen, path: 'profile'),
