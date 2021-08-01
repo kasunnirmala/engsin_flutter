@@ -1,4 +1,5 @@
 import 'package:engsinapp_flutter/models/bank.dart';
+import 'package:engsinapp_flutter/models/district.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user.g.dart';
@@ -14,6 +15,9 @@ class UserModel {
       this.isDetailsAdded = false,
       this.updatedAt,
       this.promoCode,
+      this.generatedPromo,
+      this.district,
+      this.referal,
       this.address,
       this.username,
       this.bankModel,
@@ -30,6 +34,9 @@ class UserModel {
   String? mobileNumber;
   String? address;
   String? promoCode;
+  String? generatedPromo;
+  DistrictModel? district;
+  UserModel? referal;
   BankModel? bankModel;
   bool isActive;
   bool isDeleted;

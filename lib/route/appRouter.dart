@@ -21,7 +21,7 @@ import 'package:engsinapp_flutter/screens/profile.dart';
 import 'package:engsinapp_flutter/screens/referrals.dart';
 import 'package:engsinapp_flutter/screens/singleDay.dart';
 import 'package:engsinapp_flutter/screens/termsAndConditions.dart';
-import 'package:engsinapp_flutter/screens/uploadSlip.dart';
+import 'package:engsinapp_flutter/screens/enterBankDetails.dart';
 
 @MaterialAutoRouter(
   routes: <AutoRoute>[
@@ -35,7 +35,7 @@ import 'package:engsinapp_flutter/screens/uploadSlip.dart';
       AutoRoute(page: HomeScreen, initial: true),
       AutoRoute(page: ProfileScreen, path: 'profile'),
       AutoRoute(page: EnterDetailsScreen, path: 'enterDetails'),
-      AutoRoute(page: UploadSlipScreen, path: 'uploadSlip'),
+      AutoRoute(page: EnterBankDetaillScreen, path: 'enterBankDetails'),
       AutoRoute(page: AccountActivePending, path: 'activation'),
       AutoRoute(page: NotificationScreen, path: 'notifications'),
       AutoRoute(page: AboutScreen, path: 'about'),

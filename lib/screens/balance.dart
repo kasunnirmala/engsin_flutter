@@ -1,6 +1,11 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:engsinapp_flutter/models/payment.dart';
 import 'package:engsinapp_flutter/resources/constants.dart';
 import 'package:engsinapp_flutter/resources/resources.dart';
+import 'package:engsinapp_flutter/services/balanceService.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class BalanceScreen extends StatefulWidget {
   const BalanceScreen({Key? key}) : super(key: key);
@@ -10,16 +15,22 @@ class BalanceScreen extends StatefulWidget {
 }
 
 class _BalanceScreenState extends State<BalanceScreen> {
-  List items = [
-    ["5,000", "Pending"],
-    ["5,000", "Paid"],
-    ["5,000", "Paid"],
-    ["6,000", "Paid"]
-  ];
+  late BalanceService _balanceService;
+  final _formKey = GlobalKey<FormBuilderState>(debugLabel: "Profile");
   @override
   void initState() {
     super.initState();
+    _balanceService = BalanceService(context);
     Resources.appbartitleStream.add("Balance");
+  }
+
+  Future<double> getMyBalance() async {
+    return await _balanceService.getMyBalance();
+  }
+
+  Future<List<PaymentModel?>> getAllMyRequests() async {
+    List<PaymentModel?> _payments = await _balanceService.getAllMyPayments();
+    return _payments;
   }
 
   @override
@@ -44,15 +55,83 @@ class _BalanceScreenState extends State<BalanceScreen> {
                   ),
                 ),
                 Expanded(
-                    flex: 11,
-                    child: ListView.builder(
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          return _BalanceCard(
-                            size: size,
-                            amount: items[index][0],
-                            description: items[index][1],
-                          );
+                  flex: 3,
+                  child: FutureBuilder<double>(
+                      future: getMyBalance(),
+                      builder: (context, snapshot) {
+                        return snapshot.hasData
+                            ? FormBuilder(
+                                key: _formKey,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                        "You hace : LKR ${snapshot.data} to request."),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    FormBuilderTextField(
+                                      name: 'amount',
+                                      decoration: InputDecoration(
+                                        labelText: 'Amount',
+                                      ),
+                                      validator: FormBuilderValidators.compose([
+                                        FormBuilderValidators.required(context),
+                                        FormBuilderValidators.numeric(context),
+                                        FormBuilderValidators.max(
+                                            context, snapshot.data!),
+                                      ]),
+                                      keyboardType: TextInputType.number,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () async {
+                                          if (_formKey.currentState!
+                                              .saveAndValidate()) {
+                                            EasyLoading.show(
+                                                status: "Requesting");
+                                            var resp = await _balanceService
+                                                .requestPayment(double.tryParse(
+                                                        _formKey.currentState!
+                                                            .value["amount"]) ??
+                                                    0);
+                                            EasyLoading.dismiss();
+                                            if (resp["status"]) {
+                                              Resources.getSuccessToast(
+                                                  resp["message"]);
+                                              AutoRouter.of(context).pop();
+                                            } else {
+                                              Resources.getErrorToast(
+                                                  resp["message"]);
+                                            }
+                                          } else {}
+                                        },
+                                        child: Text("Request"))
+                                  ],
+                                ),
+                              )
+                            : Container();
+                      }),
+                ),
+                Expanded(
+                    flex: 8,
+                    child: FutureBuilder<List<PaymentModel?>>(
+                        future: getAllMyRequests(),
+                        builder: (context, snapshot) {
+                          return snapshot.hasData
+                              ? ListView.builder(
+                                  itemCount: snapshot.data?.length,
+                                  itemBuilder: (context, index) {
+                                    return _BalanceCard(
+                                      size: size,
+                                      amount:
+                                          "${snapshot.data?[index]?.amount}",
+                                      description:
+                                          "${snapshot.data![index]!.paidStatus ? 'Paid' : 'Pending'}",
+                                    );
+                                  })
+                              : Container();
                         })),
               ],
             ),

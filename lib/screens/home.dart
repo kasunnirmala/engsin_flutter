@@ -3,7 +3,6 @@ import 'package:engsinapp_flutter/models/user.dart';
 import 'package:engsinapp_flutter/resources/constants.dart';
 import 'package:engsinapp_flutter/resources/resources.dart';
 import 'package:engsinapp_flutter/route/appRouter.gr.dart';
-import 'package:engsinapp_flutter/screens/help_center.dart';
 import 'package:engsinapp_flutter/services/userService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -50,39 +49,37 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/images/bg3.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
       child: Column(
         children: [
           Expanded(
-            flex: 6,
+            child: Container(),
+            flex: 1,
+          ),
+          Expanded(
+            flex: 3,
             child: Container(
-              child: ClipPath(
-                clipper:
-                    CustomShape(), // this is my own class which extendsCustomClipper
-                child: Container(
-                  color: kPrimaryColor,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                          "A MESSAGE TO DISPLAY",
-                          style: kH2HeaderStyle,
-                        ),
-                        Container(
-                          width: 150,
-                          height: 100,
-                          child: Image.asset(
-                            "assets/images/logo.png",
-                            // width: 150,
-                          ),
-                        ),
-                        SizedBox(),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              child: ListView.builder(
+                  itemCount: 10,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (ctx, i) {
+                    return Card(
+                      color: kPrimaryVeryLightColor,
+                      child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Image.asset("assets/images/banner.png")),
+                    );
+                  }),
             ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(),
           ),
           Expanded(
               flex: 8,
@@ -94,10 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         flex: 7,
                         child: Container(
                           decoration: BoxDecoration(
-                              color: kSecondaryColor,
+                              // color: kPrimaryLightColor.withOpacity(0.3),
                               borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(30),
-                              )),
+                            top: Radius.circular(30),
+                          )),
                           child: Padding(
                             padding: EdgeInsets.only(top: 30),
                             child: Container(
@@ -108,15 +105,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: Row(
                                     children: [
                                       Expanded(
-                                        child: Container(
-                                          child: _MenuItemTile(
-                                            icon: FontAwesomeIcons.book,
-                                            title: "Learning",
-                                            onPressed: () {
-                                              AutoRouter.of(context)
-                                                  .push(DayListScreenRoute());
-                                            },
-                                          ),
+                                        child: _MenuItemTile(
+                                          icon: FontAwesomeIcons.book,
+                                          title: "Learning",
+                                          onPressed: () {
+                                            AutoRouter.of(context)
+                                                .push(DayListScreenRoute());
+                                          },
                                         ),
                                       ),
                                       Expanded(
@@ -248,10 +243,16 @@ class _MenuItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Padding(
+      padding: const EdgeInsets.all(10),
       child: Container(
         child: MaterialButton(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40),
+              side: BorderSide(color: kPrimaryColor)),
           onPressed: onPressed,
+          color: kSecondaryColor,
           child: Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -261,7 +262,10 @@ class _MenuItemTile extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Text(title)
+                Text(
+                  title,
+                  style: kSmallStyle,
+                )
               ],
             ),
           ),

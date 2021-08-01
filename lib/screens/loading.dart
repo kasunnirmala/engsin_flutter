@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:engsinapp_flutter/resources/constants.dart';
 import 'package:engsinapp_flutter/route/appRouter.gr.dart';
 import 'package:engsinapp_flutter/services/userService.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return SafeArea(
       child: Scaffold(
           body: Container(
-        color: Colors.blue[100],
+        color: kPrimaryColor,
+        child: Center(
+          child: Image.asset("assets/images/logo.png"),
+        ),
       )),
     );
   }

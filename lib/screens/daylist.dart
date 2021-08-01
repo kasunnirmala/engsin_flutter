@@ -54,8 +54,7 @@ class _DayListScreenState extends State<DayListScreen> {
                     children: days.map<Widget>((value) {
                       return GestureDetector(
                         child: Card(
-                          color: Colors.primaries[
-                              Random().nextInt(Colors.primaries.length)],
+                          color: kPrimaryColor,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [

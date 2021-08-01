@@ -10,14 +10,15 @@ import 'package:engsinapp_flutter/util/oauth2Helper.dart';
 import 'package:flutter/material.dart';
 import 'baseService.dart';
 
-class WordService extends BaseService {
+class OpenService extends BaseService {
   Dio _dio = GetDio().get();
   BuildContext context;
-  WordService(this.context);
 
-  Future<List> getDays() async {
+  OpenService(this.context);
+
+  Future<List> getDistricts() async {
     try {
-      var response = await _dio.get('/api/v1/word/getAllDays');
+      var response = await _dio.get('/api/v1/open/districts/getAll');
       if (response.data["status"]) {
         return response.data["data"];
       }
@@ -29,18 +30,14 @@ class WordService extends BaseService {
     }
   }
 
-  Future<WordModel?> getWords(String dayMeta) async {
+  Future<bool> checkPromo(String promo) async {
     try {
-      var response = await _dio.get('/api/v1/word/getAllwords/$dayMeta');
-      if (response.data["status"]) {
-        WordModel wordModel = WordModel.fromJson(response.data["data"][0]);
-        return wordModel;
-      }
-      return null;
+      var response = await _dio.get('/api/v1/open/checkPromo/$promo');
+      return response.data;
     } catch (e) {
       print(e);
       await onDioError(e, context);
-      return null;
+      return false;
     }
   }
 }

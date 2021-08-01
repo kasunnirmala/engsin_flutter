@@ -74,30 +74,28 @@ class _SingleDayScreenState extends State<SingleDayScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        ToggleButtons(
-                          children: [
-                            Icon(FontAwesomeIcons.volumeUp),
-                            Icon(FontAwesomeIcons.pauseCircle)
-                          ],
-                          isSelected: [false, false],
-                          onPressed: (index) async {
-                            setState(() {});
-                            switch (index) {
-                              case 0:
-                                await play();
-                                break;
-                              case 1:
-                                await resume();
-                                break;
-                            }
-                          },
+                        Expanded(flex: 5, child: Container()),
+                        Expanded(
+                          flex: 3,
+                          child: ToggleButtons(
+                            children: [
+                              Icon(FontAwesomeIcons.volumeUp),
+                              Icon(FontAwesomeIcons.pauseCircle)
+                            ],
+                            isSelected: [false, false],
+                            onPressed: (index) async {
+                              setState(() {});
+                              switch (index) {
+                                case 0:
+                                  await play();
+                                  break;
+                                case 1:
+                                  await resume();
+                                  break;
+                              }
+                            },
+                          ),
                         )
-                        // IconButton(
-                        //   icon: Icon(FontAwesomeIcons.volumeUp),
-                        //   onPressed: () async {
-                        //     await play();
-                        //   },
-                        // ),
                       ],
                     )),
                 Expanded(
@@ -112,8 +110,12 @@ class _SingleDayScreenState extends State<SingleDayScreen> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text("${_wordModel?.words?[index][0] ?? ''}"),
-                                  Text("${_wordModel?.words?[index][1] ?? ''}"),
+                                  Flexible(
+                                      child: Text(
+                                          "${_wordModel?.words?[index][0] ?? ''}")),
+                                  Flexible(
+                                      child: Text(
+                                          "${_wordModel?.words?[index][1] ?? ''}")),
                                 ],
                               ),
                             ),

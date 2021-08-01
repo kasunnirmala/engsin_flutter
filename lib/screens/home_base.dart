@@ -25,13 +25,12 @@ class _HomeBaseState extends State<HomeBase> {
 
   @override
   Widget build(BuildContext context) {
-    // double sysHeight = MediaQuery.of(context).size.height;
-    // double sysWidth = MediaQuery.of(context).size.width;
     final cfg =
         AppcastConfiguration(url: APPCAST_URL, supportedOS: ['android']);
     return FlutterEasyLoading(
       child: SafeArea(
         child: Scaffold(
+          drawer: GetDrawer().get(context),
           appBar: AppBar(
             leading: AutoRouter.of(context).canPopSelfOrChildren
                 ? IconButton(
@@ -47,14 +46,14 @@ class _HomeBaseState extends State<HomeBase> {
                 builder: (context, snapshot) {
                   return Text(snapshot.data ?? "");
                 }),
-            actions: [
-              IconButton(
-                  onPressed: () async {
-                    // AutoRouter.of(context).replace(LoadingScreenRoute());
-                    await _userService.onUserFetchError();
-                  },
-                  icon: Icon(FontAwesomeIcons.signOutAlt))
-            ],
+            // actions: [
+            //   IconButton(
+            //       onPressed: () async {
+            //         // AutoRouter.of(context).replace(LoadingScreenRoute());
+            //         await _userService.onUserFetchError();
+            //       },
+            //       icon: Icon(FontAwesomeIcons.signOutAlt))
+            // ],
           ),
           backgroundColor: kMainBGColor,
           body: UpgradeAlert(

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:engsinapp_flutter/models/user.dart';
+import 'package:engsinapp_flutter/resources/JsonToList.dart';
 import 'package:engsinapp_flutter/route/appRouter.gr.dart';
 import 'package:engsinapp_flutter/util/dio_helper.dart';
 import 'package:engsinapp_flutter/util/get_dio.dart';
@@ -58,17 +59,13 @@ class UserService extends BaseService {
     }
   }
 
-  Future<Map<String, dynamic>> updateUser(UserModel userModel, XFile file,
-      Function(int, int) onSendProgress) async {
-    FormData formData = FormData.fromMap({
-      'slip': (await MultipartFile.fromFile(file.path)),
-      'user': jsonEncode(userModel.toJson())
-    });
+  Future<Map<String, dynamic>> updateUser(UserModel userModel) async {
+    var data = userModel.toJson();
     try {
-      var response = await _dio.post('/api/v1/user/update',
-          data: formData,
-          options: Options(contentType: "multipart/form-data"),
-          onSendProgress: onSendProgress);
+      var response = await _dio.post(
+        '/api/v1/user/update',
+        data: data,
+      );
       return response.data;
     } catch (e) {
       return await onDioError(e, context);
@@ -94,5 +91,21 @@ class UserService extends BaseService {
     await logout();
     AutoRouter.of(context).root.replace(LoadingScreenRoute());
     return null;
+  }
+
+  Future<List<UserModel?>> getMyReferals() async {
+    try {
+      var response = await _dio.get('/api/v1/user/getMyReferals');
+      if (response.data["status"]) {
+        List<UserModel> users =
+            CreateList<UserModel>(response.data["data"]).getList();
+        return users;
+      }
+      return await onUserFetchError();
+    } catch (e) {
+      print(e);
+      await onDioError(e, context);
+      return [];
+    }
   }
 }

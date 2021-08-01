@@ -1,11 +1,12 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:engsinapp_flutter/models/bank.dart';
+import 'package:engsinapp_flutter/models/district.dart';
 import 'package:engsinapp_flutter/models/user.dart';
-import 'package:engsinapp_flutter/resources/constants.dart';
 import 'package:engsinapp_flutter/resources/resources.dart';
 import 'package:engsinapp_flutter/route/appRouter.gr.dart';
+import 'package:engsinapp_flutter/services/openService.dart';
 import 'package:engsinapp_flutter/widgets/LoginSignup/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class EnterDetailsScreen extends StatefulWidget {
@@ -18,10 +19,20 @@ class EnterDetailsScreen extends StatefulWidget {
 class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
   final _formKey = GlobalKey<FormBuilderState>(debugLabel: "Details");
   UserModel _userModel = Resources.userModel;
+  late OpenService _openService;
+  List districts = [];
   @override
   void initState() {
+    _openService = OpenService(context);
     super.initState();
     Resources.appbartitleStream.add("Fill Profile");
+    getDistricts();
+  }
+
+  getDistricts() async {
+    districts = await _openService.getDistricts();
+    print(districts);
+    setState(() {});
   }
 
   @override
@@ -42,7 +53,6 @@ class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
                   child: SingleChildScrollView(
                     child: FormBuilder(
                         key: _formKey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         child: Column(children: <Widget>[
                           FormBuilderTextField(
                             name: 'name',
@@ -73,58 +83,56 @@ class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
                               FormBuilderValidators.required(context),
                             ]),
                           ),
-                          FormBuilderTextField(
-                            name: 'promo',
-                            decoration:
-                                InputDecoration(labelText: "Promo Code"),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                            ]),
+                          SizedBox(height: 10),
+                          Card(
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: FormBuilderTextField(
+                                name: 'promo',
+                                decoration:
+                                    InputDecoration(labelText: "Promo Code"),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          FormBuilderDropdown(
+                            name: 'district',
+                            decoration: InputDecoration(
+                              labelText: 'District',
+                            ),
+                            // initialValue: 'Male',
+                            allowClear: true,
+                            hint: Text('Select District'),
+                            validator: FormBuilderValidators.compose(
+                                [FormBuilderValidators.required(context)]),
+                            items: districts
+                                .map((district) => DropdownMenuItem(
+                                      value: district["district_meta"],
+                                      child: Text('${district["district"]}'),
+                                    ))
+                                .toList(),
                           ),
                           SizedBox(
                             height: 10,
-                          ),
-                          Divider(),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          FormBuilderTextField(
-                            name: 'holderName',
-                            decoration:
-                                InputDecoration(labelText: "Holder Name"),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                            ]),
-                          ),
-                          FormBuilderTextField(
-                            name: 'accountNumber',
-                            decoration:
-                                InputDecoration(labelText: "Account Number"),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                            ]),
-                          ),
-                          FormBuilderTextField(
-                            name: 'bank',
-                            decoration: InputDecoration(labelText: "Bank"),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                            ]),
-                          ),
-                          FormBuilderTextField(
-                            name: 'branch',
-                            decoration: InputDecoration(labelText: "Branch"),
-                            validator: FormBuilderValidators.compose([
-                              FormBuilderValidators.required(context),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: 50,
                           ),
                           RoundedButton(
                               text: "Next",
-                              press: () {
+                              press: () async {
                                 if (_formKey.currentState!.saveAndValidate()) {
+                                  if ((_formKey.currentState?.value["promo"]
+                                          as String)
+                                      .isNotEmpty) {
+                                    EasyLoading.show(
+                                        status: "Checking Promocode");
+                                    bool res = await _openService.checkPromo(
+                                        _formKey.currentState?.value["promo"]);
+                                    EasyLoading.dismiss();
+                                    if (!res) {
+                                      Resources.getErrorToast(
+                                          "Cannot Find Promo Code.");
+                                      return;
+                                    }
+                                  }
                                   _userModel.name =
                                       _formKey.currentState?.value["name"];
                                   _userModel.nic =
@@ -135,18 +143,12 @@ class _EnterDetailsScreenState extends State<EnterDetailsScreen> {
                                       _formKey.currentState?.value["mobileNo"];
                                   _userModel.promoCode =
                                       _formKey.currentState?.value["promo"];
-                                  BankModel _bankModal = BankModel(
-                                      cardHolderName: _formKey
-                                          .currentState?.value["holderName"],
-                                      accountNumber: _formKey
-                                          .currentState?.value["accountNumber"],
-                                      bank:
-                                          _formKey.currentState?.value["bank"],
-                                      branch: _formKey
-                                          .currentState?.value["branch"]);
-                                  _userModel.bankModel = _bankModal;
+                                  _userModel.district = DistrictModel(
+                                      district_meta: _formKey
+                                          .currentState?.value["district"]);
+
                                   AutoRouter.of(context).push(
-                                      UploadSlipScreenRoute(
+                                      EnterBankDetaillScreenRoute(
                                           userModel: _userModel));
                                 }
                               })

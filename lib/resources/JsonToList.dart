@@ -1,4 +1,5 @@
 import 'package:engsinapp_flutter/models/bank.dart';
+import 'package:engsinapp_flutter/models/payment.dart';
 import 'package:engsinapp_flutter/models/user.dart';
 import 'package:engsinapp_flutter/models/word.dart';
 
@@ -26,8 +27,11 @@ class CreateList<T> {
     if (T == BankModel().runtimeType) {
       return BankModel.fromJson(json);
     }
-      if (T == WordModel().runtimeType) {
+    if (T == WordModel().runtimeType) {
       return WordModel.fromJson(json);
+    }
+    if (T == PaymentModel().runtimeType) {
+      return PaymentModel.fromJson(json);
     }
   }
 }

@@ -13,6 +13,7 @@ import '../screens/accountactivepeding.dart' as _i12;
 import '../screens/balance.dart' as _i18;
 import '../screens/bank.dart' as _i15;
 import '../screens/daylist.dart' as _i17;
+import '../screens/enterBankDetails.dart' as _i11;
 import '../screens/enterDetails.dart' as _i10;
 import '../screens/help_center.dart' as _i20;
 import '../screens/home.dart' as _i8;
@@ -26,7 +27,6 @@ import '../screens/profile.dart' as _i9;
 import '../screens/referrals.dart' as _i19;
 import '../screens/singleDay.dart' as _i16;
 import '../screens/termsAndConditions.dart' as _i21;
-import '../screens/uploadSlip.dart' as _i11;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
@@ -74,11 +74,11 @@ class AppRouter extends _i1.RootStackRouter {
         builder: (_) {
           return const _i10.EnterDetailsScreen();
         }),
-    UploadSlipScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
+    EnterBankDetaillScreenRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
         builder: (data) {
-          final args = data.argsAs<UploadSlipScreenRouteArgs>();
-          return _i11.UploadSlipScreen(args.userModel);
+          final args = data.argsAs<EnterBankDetaillScreenRouteArgs>();
+          return _i11.EnterBankDetaillScreen(args.userModel);
         }),
     AccountActivePendingRoute.name: (routeData) => _i1.MaterialPageX<dynamic>(
         routeData: routeData,
@@ -144,7 +144,8 @@ class AppRouter extends _i1.RootStackRouter {
           _i1.RouteConfig(HomeScreenRoute.name, path: ''),
           _i1.RouteConfig(ProfileScreenRoute.name, path: 'profile'),
           _i1.RouteConfig(EnterDetailsScreenRoute.name, path: 'enterDetails'),
-          _i1.RouteConfig(UploadSlipScreenRoute.name, path: 'uploadSlip'),
+          _i1.RouteConfig(EnterBankDetaillScreenRoute.name,
+              path: 'enterBankDetails'),
           _i1.RouteConfig(AccountActivePendingRoute.name, path: 'activation'),
           _i1.RouteConfig(NotificationScreenRoute.name, path: 'notifications'),
           _i1.RouteConfig(AboutScreenRoute.name, path: 'about'),
@@ -209,18 +210,18 @@ class EnterDetailsScreenRoute extends _i1.PageRouteInfo {
   static const String name = 'EnterDetailsScreenRoute';
 }
 
-class UploadSlipScreenRoute
-    extends _i1.PageRouteInfo<UploadSlipScreenRouteArgs> {
-  UploadSlipScreenRoute({required _i22.UserModel userModel})
+class EnterBankDetaillScreenRoute
+    extends _i1.PageRouteInfo<EnterBankDetaillScreenRouteArgs> {
+  EnterBankDetaillScreenRoute({required _i22.UserModel userModel})
       : super(name,
-            path: 'uploadSlip',
-            args: UploadSlipScreenRouteArgs(userModel: userModel));
+            path: 'enterBankDetails',
+            args: EnterBankDetaillScreenRouteArgs(userModel: userModel));
 
-  static const String name = 'UploadSlipScreenRoute';
+  static const String name = 'EnterBankDetaillScreenRoute';
 }
 
-class UploadSlipScreenRouteArgs {
-  const UploadSlipScreenRouteArgs({required this.userModel});
+class EnterBankDetaillScreenRouteArgs {
+  const EnterBankDetaillScreenRouteArgs({required this.userModel});
 
   final _i22.UserModel userModel;
 }

@@ -124,7 +124,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                               .center,
                                                       children: [
                                                         SelectableText(
-                                                          "234324234",
+                                                          snapshot.data
+                                                                  ?.generatedPromo ??
+                                                              "",
                                                           style: kH2HeaderStyle,
                                                         ),
                                                         SizedBox(

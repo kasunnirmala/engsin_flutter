@@ -16,6 +16,13 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
     isDetailsAdded: json['isDetailsAdded'] as bool,
     updatedAt: json['updatedAt'] as String?,
     promoCode: json['promoCode'] as String?,
+    generatedPromo: json['generatedPromo'] as String?,
+    district: json['district'] == null
+        ? null
+        : DistrictModel.fromJson(json['district'] as Map<String, dynamic>),
+    referal: json['referal'] == null
+        ? null
+        : UserModel.fromJson(json['referal'] as Map<String, dynamic>),
     address: json['address'] as String?,
     username: json['username'] as String?,
     bankModel: json['bankModel'] == null
@@ -37,6 +44,9 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
       'mobileNumber': instance.mobileNumber,
       'address': instance.address,
       'promoCode': instance.promoCode,
+      'generatedPromo': instance.generatedPromo,
+      'district': instance.district,
+      'referal': instance.referal,
       'bankModel': instance.bankModel,
       'isActive': instance.isActive,
       'isDeleted': instance.isDeleted,
